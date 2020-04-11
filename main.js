@@ -6,7 +6,7 @@ const request = require('request')
 const webhook = require("webhook-discord")
 // Set up the webhook
 const Hook = new webhook.Webhook("https://discordapp.com/api/webhooks/692545408580321360/D56luMPv_GWHkOhFeaBpmVW40MCWPrzmEl4DOW2zmbM031SZon4YcOZe170eGwZVBg9p")
-const Testing = new webhook.Webhook("https://discordapp.com/api/webhooks/692416461427179590/brcjnjeW2BnCBsgwzjJSORTx_gZPF9pGNXoqDNp3PIZrTo-YCv6f5MmOGaCXrLsdf3_J")
+//const Lab = new webhook.Webhook("https://discordapp.com/api/webhooks/669852136779022337/xw_nvmKicMaVgmhzwubPSHKRcJDbOcrwHqr7YYz4BCPvZFAyeQ5juwrZazS7Faf_AhrU")
 
 const logo = "https://i0.wp.com/www.techjunkie.com/wp-content/uploads/2020/02/Is-Yeezy-Supply-Legit.jpg?resize=400%2C250&ssl=1"
 
@@ -14,6 +14,7 @@ const chuk = "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/89/5f/b4/895f
 
 // Setting myJSON to something random in order to compare it later.
 var myJSON ="TESTING HOMIE THIS IS TESTING!";
+var outofstock = false;
 
 // Asks for input from the user. The input is the SKU of the shoe. 
 const readline = require('readline').createInterface({
@@ -72,11 +73,19 @@ axios.get(productURL)
         // Set stored data to the new data
         myJSON = difference;
         // Parse the data
+        console.log(myJSON)
         const obj = JSON.parse(myJSON);
+        
         // Create an empty string to use for the webhook
         var sizes = ""
         // Function to filter the data and select only IN_STOCK items
         const inStock = obj.filter(shoe => shoe.availability_status === 'IN_STOCK');
+        if(inStock === ""){
+          outofstock = true;
+        } 
+        else{
+          outofstock = false;
+        }
         // For loop to loop through the IN_STOCK items
         for(var i = 0; i<inStock.length; i++){
             // Debug code to make it easier to see the data in console
@@ -98,12 +107,21 @@ axios.get(productURL)
         }
     
     
+        var normal = "#aabbcc"
+        var oos = "#e82517"
+        var color = ""
+        if(outofstock === true){
+          color = oos
+        }
+        else{
+          color = normal
+        }
        // The constructor for the webhook message. 
         const msg = new webhook.MessageBuilder()
                     // Name of the "USER" sending the message
                     .setName("YEEZY SUPPLY")
                     // Color of the message. Right now selected blue, for "info"
-                    .setColor("#aabbcc")
+                    .setColor(color)
                     // A text field inside the webhook. Sets Title to IN STOCK and adds all of the sizes. Makes it look nicer.
                     .addField("IN STOCK", sizes)
                     // Shows the image of the shoe in question. Done dynamically at the start and changes according to the sku.
@@ -116,7 +134,7 @@ axios.get(productURL)
                     .setTime()
         // Sends the message.             
         Hook.send(msg);
-        Testing.send(msg);
+       // Lab.send(msg);
         // Debug code to display in console. Not needed. Keeping it for now as I like to see whats going on.
         console.log("*****************************************");
         console.log(myJSON);
