@@ -17,4 +17,4 @@ Don’t steal my code, I can run the monitor for you for free on any drop just m
 
 
 
-![Sample of what an INSTOCK item will look like](https://gyazo.com/77b8690f29ddee413a6f53510f846a10)
+![Sample of what an INSTOCK item will look like](https://i.gyazo.com/77b8690f29ddee413a6f53510f846a10.png)
