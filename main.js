@@ -6,14 +6,14 @@ const request = require('request')
 const webhook = require("webhook-discord")
 // Set up the webhook
 const Hook = new webhook.Webhook("https://discordapp.com/api/webhooks/692545408580321360/D56luMPv_GWHkOhFeaBpmVW40MCWPrzmEl4DOW2zmbM031SZon4YcOZe170eGwZVBg9p")
-//const Lab = new webhook.Webhook("https://discordapp.com/api/webhooks/669852136779022337/xw_nvmKicMaVgmhzwubPSHKRcJDbOcrwHqr7YYz4BCPvZFAyeQ5juwrZazS7Faf_AhrU")
+const Lab = new webhook.Webhook("https://discordapp.com/api/webhooks/669852136779022337/xw_nvmKicMaVgmhzwubPSHKRcJDbOcrwHqr7YYz4BCPvZFAyeQ5juwrZazS7Faf_AhrU")
 
 const logo = "https://i0.wp.com/www.techjunkie.com/wp-content/uploads/2020/02/Is-Yeezy-Supply-Legit.jpg?resize=400%2C250&ssl=1"
 
 const chuk = "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/89/5f/b4/895fb4d5-d728-04ae-46fd-76f66820c41f/pr_source.png/800x800bb.jpeg"
 
 // Setting myJSON to something random in order to compare it later.
-var myJSON ="TESTING HOMIE THIS IS TESTING!";
+var myJSON ="Nothing here to start with :)";
 var outofstock = false;
 
 // Asks for input from the user. The input is the SKU of the shoe. 
@@ -73,7 +73,7 @@ axios.get(productURL)
         // Set stored data to the new data
         myJSON = difference;
         // Parse the data
-        console.log(myJSON)
+        //console.log(difference)
         const obj = JSON.parse(myJSON);
         
         // Create an empty string to use for the webhook
@@ -105,9 +105,12 @@ axios.get(productURL)
             // More debug code for better spacing.
             console.log("=======================================");
         }
-    
-    
-        var normal = "#aabbcc"
+        console.log(sizes.length)
+        if(sizes.length === 0){
+          sizes = "SOLD OUT"
+          outofstock = true;
+        }
+        var normal = "#20fc03"
         var oos = "#e82517"
         var color = ""
         if(outofstock === true){
@@ -134,7 +137,7 @@ axios.get(productURL)
                     .setTime()
         // Sends the message.             
         Hook.send(msg);
-       // Lab.send(msg);
+        Lab.send(msg);
         // Debug code to display in console. Not needed. Keeping it for now as I like to see whats going on.
         console.log("*****************************************");
         console.log(myJSON);
