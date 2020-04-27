@@ -1,16 +1,18 @@
 const axios = require('axios');
-const cheerio = require('cheerio')
-const request = require('request')
+// Stores all the private data so yall don't steal my webhooks and logos. 
+const data = require('./data');
 //const readline = require('readline')
 // Import the discord.js module
 const webhook = require("webhook-discord")
-// Set up the webhook
-const Hook = new webhook.Webhook("https://discordapp.com/api/webhooks/692545408580321360/D56luMPv_GWHkOhFeaBpmVW40MCWPrzmEl4DOW2zmbM031SZon4YcOZe170eGwZVBg9p")
-const Lab = new webhook.Webhook("https://discordapp.com/api/webhooks/669852136779022337/xw_nvmKicMaVgmhzwubPSHKRcJDbOcrwHqr7YYz4BCPvZFAyeQ5juwrZazS7Faf_AhrU")
+// Set up the webhooks for each server
+const Hook = new webhook.Webhook(data.MyWebhook)
+const Lab = new webhook.Webhook(data.YeezyLabWebhook)
 
-const logo = "https://i0.wp.com/www.techjunkie.com/wp-content/uploads/2020/02/Is-Yeezy-Supply-Legit.jpg?resize=400%2C250&ssl=1"
+// Sets up the YEEZY logo to later be used as the avatar for the webhook.
+const logo = data.YeezyLogo;
 
-const chuk = "https://is2-ssl.mzstatic.com/image/thumb/Music113/v4/89/5f/b4/895fb4d5-d728-04ae-46fd-76f66820c41f/pr_source.png/800x800bb.jpeg"
+// Sets up my personal logo to be used in the footer of the webhook. Just a bit of personal branding :)
+const chuk = data.ChukLogo;
 
 // Setting myJSON to something random in order to compare it later.
 var myJSON ="Nothing here to start with :)";
@@ -105,21 +107,29 @@ axios.get(productURL)
             // More debug code for better spacing.
             console.log("=======================================");
         }
-        console.log(sizes.length)
+        // Debug code please ignore. 
+        //console.log(sizes.length)
+
+        // Checking if there are any sizesm if not it will display sold out and change the color to red.
         if(sizes.length === 0){
           sizes = "SOLD OUT"
           outofstock = true;
         }
+
+        // Just colors used for the webhook. Normal is green to show In Stock. Oos is Red to show Out of Stock. 
         var normal = "#20fc03"
         var oos = "#e82517"
         var color = ""
+        // Redundant code could be very easily combined with the if statments above. This was hastly written as a last minute addition at some point and just stayed.
+        // Will fix at some point, next time I need to edit the code.
+        // It just sets the colors from above to the corresponding ones.
         if(outofstock === true){
           color = oos
         }
         else{
           color = normal
         }
-       // The constructor for the webhook message. 
+       // The constructor for the webhook message. This is using npm webhoook-discord. At the time I used this as it was quicker. In other monitors I have my own system.
         const msg = new webhook.MessageBuilder()
                     // Name of the "USER" sending the message
                     .setName("YEEZY SUPPLY")
@@ -135,7 +145,7 @@ axios.get(productURL)
                     .setFooter("Lil Chuk#0001" , chuk)
                     // Adds the time of the webhook
                     .setTime()
-        // Sends the message.             
+        // Sends the Webhook message.             
         Hook.send(msg);
         Lab.send(msg);
         // Debug code to display in console. Not needed. Keeping it for now as I like to see whats going on.
@@ -159,7 +169,7 @@ axios.get(productURL)
     // always executed just sates the code is done running. not needed I choose to have it.
     console.log("Done")
   });
-  // 5 second delay on running. 
+  // 5 second delay on running. Can bee much lower. Personal preference for Yeezy Supply as the stock only starts moving closer to end of release. 
   }, 5000);
 
 // closes the readline. kind of a wonky way to do it but this way the readline will wait for user input before executing the rest of the code.
